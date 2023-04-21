@@ -1,3 +1,6 @@
+script_path=$(dirname $0)
+soource $(script_path)/common.sh
+
 echo -e "\e[36m>>>>>>>>> Download NodeJS <<<<<<<<<\e[0m"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
@@ -5,11 +8,11 @@ echo -e "\e[36m>>>>>>>>> Install NodeJS <<<<<<<<<\e[0m"
 yum install nodejs -y
 
 echo -e "\e[36m>>>>>>>>> Copy Cart Service File <<<<<<<<<\e[0m"
-cp /home/centos/KoulteghDevOps/Roboshop/cart.service /etc/systemd/system/cart.service
+cp $(script_path)/cart.service /etc/systemd/system/cart.service
 # cp cart.service /etc/systemd/system/cart.service
 
 echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd roboshop
+useradd $(app_user)
 
 echo -e "\e[36m>>>>>>>>> Create A App directory <<<<<<<<<\e[0m"
 rm -rf /app

@@ -1,3 +1,6 @@
+script_path=$(dirname $0)
+soource $(script_path)/common.sh
+
 echo -e "\e[36m>>>>>>>>> Download NodeJS <<<<<<<<<\e[0m"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
@@ -11,7 +14,7 @@ yum install nodejs -y
 # cp mongo.repo /etc/yum.repos.d/mongo.repo
 
 echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd roboshop
+useradd $(app_user)
 
 echo -e "\e[36m>>>>>>>>> Create App Directory <<<<<<<<<\e[0m"
 rm -rf /app
@@ -30,7 +33,7 @@ echo -e "\e[36m>>>>>>>>> Install User Dependencies <<<<<<<<<\e[0m"
 npm install 
 
 echo -e "\e[36m>>>>>>>>> Copy User Service File <<<<<<<<<\e[0m"
-cp /home/centos/KoulteghDevOps/Roboshop/user.service /etc/systemd/system/user.service
+cp $(script_path)/user.service /etc/systemd/system/user.service
 
 echo -e "\e[36m>>>>>>>>> Reload Daemon <<<<<<<<<\e[0m"
 systemctl daemon-reload
@@ -38,7 +41,7 @@ systemctl daemon-reload
 # systemctl start user
 
 echo -e "\e[36m>>>>>>>>> Copy MongoDB Repo File <<<<<<<<<\e[0m"
-cp /home/centos/KoulteghDevOps/Roboshop/mongo.repo /etc/yum.repos.d/mongo.repo
+cp $(script_path)/mongo.repo /etc/yum.repos.d/mongo.repo
 
 echo -e "\e[36m>>>>>>>>> Installing MongoDB Shell <<<<<<<<<\e[0m"
 yum install mongodb-org-shell -y

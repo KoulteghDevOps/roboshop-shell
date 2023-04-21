@@ -1,8 +1,11 @@
+script_path=$(dirname $0)
+soource $(script_path)/common.sh
+
 echo -e "\e[36m>>>>>>>>> Install Maven <<<<<<<<<\e[0m"
 yum install maven -y
 
 echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd roboshop
+useradd $(app_user)
 
 echo -e "\e[36m>>>>>>>>> Create App Directory <<<<<<<<<\e[0m"
 rm -rf /app
@@ -24,7 +27,7 @@ echo -e "\e[36m>>>>>>>>> Move Sippinig Jars to New Location <<<<<<<<<\e[0m"
 mv target/shipping-1.0.jar shipping.jar 
 
 echo -e "\e[36m>>>>>>>>> Copy Shipping File <<<<<<<<<\e[0m"
-cp /home/centos/KoulteghDevOps/Roboshop/shipping.service /etc/systemd/system/shipping.service
+cp $(script_path)/shipping.service /etc/systemd/system/shipping.service
 # cp shipping.service /etc/systemd/system/shipping.service
 
 echo -e "\e[36m>>>>>>>>> Start Shipping Service <<<<<<<<<\e[0m"

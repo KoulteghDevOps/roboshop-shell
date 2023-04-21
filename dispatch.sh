@@ -1,8 +1,11 @@
+script_path=$(dirname $0)
+soource $(script_path)/common.sh
+
 echo -e "\e[36m>>>>>>>>> Install Golang <<<<<<<<<\e[0m"
 yum install golang -y
 
 echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd roboshop
+useradd $(app_user)
 
 echo -e "\e[36m>>>>>>>>> Create App Directory <<<<<<<<<\e[0m"
 rm -rf /app
@@ -24,7 +27,7 @@ go build
 
 echo -e "\e[36m>>>>>>>>> Copy Dispatch Service File <<<<<<<<<\e[0m"
 # cp dispatch.service /etc/systemd/system/dispatch.service
-cp /home/centos/KoulteghDevOps/Roboshop/dispatch.service /etc/systemd/system/dispatch.service
+cp $(script_path)/dispatch.service /etc/systemd/system/dispatch.service
 
 echo -e "\e[36m>>>>>>>>> Start Dispatch Service <<<<<<<<<\e[0m"
 systemctl daemon-reload
