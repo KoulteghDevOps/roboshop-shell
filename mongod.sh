@@ -1,5 +1,5 @@
 script_path=$(dirname $0)
-soource $(script_path)/common.sh
+source $(script_path)/common.sh
 
 echo -e "\e[36m>>>>>>>>> Copy Mongo Repo <<<<<<<<<\e[0m"
 cp $(script_path)/mongo.repo /etc/yum.repos.d/mongo.repo
