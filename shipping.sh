@@ -1,45 +1,48 @@
-script_path=$(dirname $0)
-source $(script_path)/common.sh
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+source ${script_path}/common.sh
+mysql_root_password=$1
 
-echo -e "\e[36m>>>>>>>>> Install Maven <<<<<<<<<\e[0m"
+if [ -z "$mysql_root_password" ]; 
+then
+    echo Input MySQL Root Password Missing
+    exit
+fi
+
+print_head "Install Maven" 
 yum install maven -y
 
-echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd $(app_user)
+print_head "Create App User" 
+useradd ${app_user}
 
-echo -e "\e[36m>>>>>>>>> Create App Directory <<<<<<<<<\e[0m"
+print_head "Create App Directory" 
 rm -rf /app
 mkdir /app 
 
-echo -e "\e[36m>>>>>>>>> Download Shipping File <<<<<<<<<\e[0m"
+print_head "Download App Content" 
 curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping.zip 
-cd /app 
-
-echo -e "\e[36m>>>>>>>>> Unzip Shipping File <<<<<<<<<\e[0m"
+ 
+print_head "Extract App Content" 
+cd /app
 unzip /tmp/shipping.zip
 
 # cd /app 
 
-echo -e "\e[36m>>>>>>>>> Package Maven <<<<<<<<<\e[0m"
+print_head "Download Maven Dependencies" 
 mvn clean package 
+mv target/shipping-1.0.jar shipping.jar
 
-echo -e "\e[36m>>>>>>>>> Move Sippinig Jars to New Location <<<<<<<<<\e[0m"
-mv target/shipping-1.0.jar shipping.jar 
+print_head "Install MySQL" 
+yum install mysql -y 
 
-echo -e "\e[36m>>>>>>>>> Copy Shipping File <<<<<<<<<\e[0m"
-cp $(script_path)/shipping.service /etc/systemd/system/shipping.service
+print_head "Load Schema" 
+mysql -h mysql-dev.gilbraltar.co.uk -uroot -p${mysql_root_password} < /app/schema/shipping.sql
+
+print_head "Copy Shipping File" 
+cp ${script_path}/shipping.service /etc/systemd/system/shipping.service
 # cp shipping.service /etc/systemd/system/shipping.service
 
-echo -e "\e[36m>>>>>>>>> Start Shipping Service <<<<<<<<<\e[0m"
+print_head "Start Shipping Service" 
 systemctl daemon-reload
 systemctl enable shipping 
 systemctl start shipping
-
-echo -e "\e[36m>>>>>>>>> Install MySQL <<<<<<<<<\e[0m"
-yum install mysql -y 
-
-echo -e "\e[36m>>>>>>>>> Update DNS Record <<<<<<<<<\e[0m"
-mysql -h mysql-dev.gilbraltar.co.uk -uroot -pRoboShop@1 < /app/schema/shipping.sql 
-
-echo -e "\e[36m>>>>>>>>> Restart Shipping Service <<<<<<<<<\e[0m"
-systemctl restart shipping

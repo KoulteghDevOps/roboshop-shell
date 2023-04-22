@@ -1,25 +1,26 @@
-script_path=$(dirname $0)
-source $(script_path)/common.sh
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+source ${script_path}/common.sh
 
-echo -e "\e[36m>>>>>>>>> Install Nginx <<<<<<<<<<<\e[0m"
+print_head "Install Nginx" 
 dnf install nginx -y 
 
-echo -e "\e[36m>>>>>>>>> Copy App Config File <<<<<<<<<<<\e[0m"
-cp $(script_path)/roboshop.conf /etc/nginx/default.d/roboshop.conf
+print_head "Copy App Config File" 
+cp ${script_path}/roboshop.conf /etc/nginx/default.d/roboshop.conf
 # cp roboshop.conf /etc/nginx/default.d/roboshop.conf
 
-echo -e "\e[36m>>>>>>>>> Empty the HTML Location <<<<<<<<<<<\e[0m"
+print_head "Empty the HTML Location" 
 rm -rf /usr/share/nginx/html/* 
 
-echo -e "\e[36m>>>>>>>>> Download Frontend File <<<<<<<<<<<\e[0m"
+print_head "Download Frontend File"
 curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip 
 
-echo -e "\e[36m>>>>>>>>> Change Directory to Nginx HTML <<<<<<<<<<<\e[0m"
+print_head "Change Directory to Nginx HTML" 
 cd /usr/share/nginx/html 
 
-echo -e "\e[36m>>>>>>>>> Unzip App File <<<<<<<<<<<\e[0m"
+print_head "Unzip App File"
 unzip /tmp/frontend.zip
 
-echo -e "\e[36m>>>>>>>>> Start Nginx <<<<<<<<<<<\e[0m"
+print_head "Start Nginx" 
 systemctl enable nginx 
 systemctl start nginx

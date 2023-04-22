@@ -1,18 +1,19 @@
-script_path=$(dirname $0)
-source $(script_path)/common.sh
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+source ${script_path}/common.sh
 
-echo -e "\e[36m>>>>>>>>> Copy Mongo Repo <<<<<<<<<\e[0m"
-cp $(script_path)/mongo.repo /etc/yum.repos.d/mongo.repo
+print_head "Copy Mongo Repo" 
+cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
-echo -e "\e[36m>>>>>>>>> Install MongoDB <<<<<<<<<\e[0m"
+print_head "Install MongoDB" 
 yum install mongodb-org -y 
 
-echo -e "\e[36m>>>>>>>>> Start MongoDB Service <<<<<<<<<\e[0m"
+print_head "Start MongoDB Service" 
 systemctl enable mongod 
 systemctl start mongod 
 
-echo -e "\e[36m>>>>>>>>> Replace Listenig IP for MongoDB <<<<<<<<<\e[0m"
+print_head "Replace Listenig IP for MongoDB" 
 sed -i -e 's/127\.0\.0\.1/0.0.0.0/g' /etc/mongod.conf
 
-echo -e "\e[36m>>>>>>>>> Restart Mongodb <<<<<<<<<\e[0m"
+print_head "Restart Mongodb"
 systemctl restart mongod

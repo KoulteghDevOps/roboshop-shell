@@ -1,56 +1,61 @@
-script_path=$(dirname $0)
-source $(script_path)/common.sh
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+source ${script_path}/common.sh
 
-echo -e "\e[36m>>>>>>>>> Download NodeJS <<<<<<<<<\e[0m"
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+component=user
 
-echo -e "\e[36m>>>>>>>>> Install NodeJS <<<<<<<<<\e[0m"
-yum install nodejs -y
+func_nodejs
 
-# echo -e "\e[36m>>>>>>>>> Copy User Service File <<<<<<<<<\e[0m"
-# cp user.service /etc/systemd/system/user.service
+# print_head "Download NodeJS" 
+# curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
-# echo -e "\e[36m>>>>>>>>> Copy MongoDB Repo File <<<<<<<<<\e[0m"
-# cp mongo.repo /etc/yum.repos.d/mongo.repo
+# print_head "Install NodeJS" 
+# yum install nodejs -y
 
-echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd $(app_user)
+# # print_head "Copy User Service File" 
+# # cp user.service /etc/systemd/system/user.service
 
-echo -e "\e[36m>>>>>>>>> Create App Directory <<<<<<<<<\e[0m"
-rm -rf /app
-mkdir /app 
+# # print_head "Copy MongoDB Repo File" 
+# # cp mongo.repo /etc/yum.repos.d/mongo.repo
 
-echo -e "\e[36m>>>>>>>>> Download User File <<<<<<<<<\e[0m"
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user.zip 
-cd /app 
+# print_head "Create A User"
+# useradd ${app_user}
 
-echo -e "\e[36m>>>>>>>>> Unzip User File <<<<<<<<<\e[0m"
-unzip /tmp/user.zip
+# print_head "Create App Directory" 
+# rm -rf /app
+# mkdir /app 
 
-# cd /app
+# print_head "Download User File"
+# curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user.zip 
+# cd /app 
 
-echo -e "\e[36m>>>>>>>>> Install User Dependencies <<<<<<<<<\e[0m"
-npm install 
+# print_head "Unzip User File" 
+# unzip /tmp/user.zip
 
-echo -e "\e[36m>>>>>>>>> Copy User Service File <<<<<<<<<\e[0m"
-cp $(script_path)/user.service /etc/systemd/system/user.service
+# # cd /app
 
-echo -e "\e[36m>>>>>>>>> Reload Daemon <<<<<<<<<\e[0m"
-systemctl daemon-reload
+# print_head "Install User Dependencies" 
+# npm install 
+
+# print_head "Copy User Service File"
+# cp ${script_path}/user.service /etc/systemd/system/user.service
+
+# print_head "Start User Service"
+# systemctl daemon-reload
 # systemctl enable user 
 # systemctl start user
 
-echo -e "\e[36m>>>>>>>>> Copy MongoDB Repo File <<<<<<<<<\e[0m"
-cp $(script_path)/mongo.repo /etc/yum.repos.d/mongo.repo
+# print_head Copy MongoDB Repo 
+# cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
-echo -e "\e[36m>>>>>>>>> Installing MongoDB Shell <<<<<<<<<\e[0m"
-yum install mongodb-org-shell -y
+# print_head Installing MongoDB Shell 
+# yum install mongodb-org-shell -y
 
-echo -e "\e[36m>>>>>>>>> Updating the DNS <<<<<<<<<\e[0m"
-mongo --host mongodb-dev.gilbraltar.co.uk </app/schema/user.js
+# print_head Load Schema 
+# mongo --host mongodb-dev.gilbraltar.co.uk </app/schema/user.js
 
 # systemctl restart user
 
-echo -e "\e[36m>>>>>>>>> Start User Service <<<<<<<<<\e[0m"
-systemctl enable user 
-systemctl start user
+# print_head Start User Service 
+# systemctl enable user 
+# systemctl start user

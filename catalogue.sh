@@ -1,52 +1,57 @@
-script_path=$(dirname $0)
-source $(script_path)/common.sh
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+source ${script_path}/common.sh
 
-echo -e "\e[36m>>>>>>>>> Download nodejs <<<<<<<<<\e[0m"
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+component=catalogue
+func_schema_setup=mongo
+func_nodejs
 
-echo -e "\e[36m>>>>>>>>> Install Nodejs <<<<<<<<<\e[0m"
-yum install nodejs -y
+# print_head "Download nodejs" 
+# curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
-# echo -e "\e[36m>>>>>>>>> Copy Catalogue System File <<<<<<<<<\e[0m"
-# cp catalogue.service /etc/systemd/system/catalogue.service
+# print_head "Install Nodejs" 
+# yum install nodejs -y
 
-# echo -e "\e[36m>>>>>>>>> Copy Mongo Repo File <<<<<<<<<\e[0m"
-# cp mongo.repo /etc/yum.repos.d/mongo.repo
+# # print_head "Copy Catalogue System File" 
+# # cp catalogue.service /etc/systemd/system/catalogue.service
 
-echo -e "\e[36m>>>>>>>>> Create a User <<<<<<<<<\e[0m"
-useradd $(app_user)
+# # print_head "Copy Mongo Repo File" 
+# # cp mongo.repo /etc/yum.repos.d/mongo.repo
 
-echo -e "\e[36m>>>>>>>>>Create App Directory <<<<<<<<<\e[0m"
-rm -rf /app
-mkdir /app 
+# print_head "Create a User" 
+# useradd ${app_user}
 
-echo -e "\e[36m>>>>>>>>> Download App Content <<<<<<<<<\e[0m"
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip 
-cd /app 
+# print_head "Create App Directory" 
+# rm -rf /app
+# mkdir /app 
 
-echo -e "\e[36m>>>>>>>>> Unzip app Content <<<<<<<<<\e[0m"
-unzip /tmp/catalogue.zip
+# print_head "Download App Content" 
+# curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip 
 # cd /app 
 
-echo -e "\e[36m>>>>>>>>> Install NodeJS Dependencies <<<<<<<<<\e[0m"
-npm install 
+# print_head "Unzip app Content" 
+# unzip /tmp/catalogue.zip
+# # cd /app 
 
-echo -e "\e[36m>>>>>>>>> Copy Catalogue System File <<<<<<<<<\e[0m"
-cp $(script_path)/catalogue.service /etc/systemd/system/catalogue.service
+# print_head "Install NodeJS Dependencies" 
+# npm install 
 
-echo -e "\e[36m>>>>>>>>> Start Catalogue Service <<<<<<<<<\e[0m"
-systemctl daemon-reload
-systemctl enable catalogue 
-systemctl start catalogue
+# print_head "Copy Catalogue System File" 
+# cp ${script_path}/catalogue.service /etc/systemd/system/catalogue.service
 
-echo -e "\e[36m>>>>>>>>> Copy Mongo Repo File <<<<<<<<<\e[0m"
-cp $(script_path)/mongo.repo /etc/yum.repos.d/mongo.repo
+# print_head "Start Catalogue Service" 
+# systemctl daemon-reload
+# systemctl enable catalogue 
+# systemctl start catalogue
 
-echo -e "\e[36m>>>>>>>>> Install Mongo Shell <<<<<<<<<\e[0m"
-yum install mongodb-org-shell -y
+# print_head "Copy Mongo Repo File" 
+# cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
-echo -e "\e[36m>>>>>>>>> Update DNS Record <<<<<<<<<\e[0m"
-mongo --host mongodb-dev.gilbraltar.co.uk </app/schema/catalogue.js
+# print_head "Install Mongo Shell" 
+# yum install mongodb-org-shell -y
 
-echo -e "\e[36m>>>>>>>>> Restart Catalogue Service <<<<<<<<<\e[0m"
-systemctl restart catalogue
+# print_head "Load Schema" 
+# mongo --host mongodb-dev.gilbraltar.co.uk </app/schema/catalogue.js
+
+# print_head "Restart Catalogue Service" 
+# systemctl restart catalogue

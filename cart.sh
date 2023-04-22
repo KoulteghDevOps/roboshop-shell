@@ -1,38 +1,42 @@
-script_path=$(dirname $0)
-source $(script_path)/common.sh
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+source ${script_path}/common.sh
 
-echo -e "\e[36m>>>>>>>>> Download NodeJS <<<<<<<<<\e[0m"
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+component=cart
+func_schema_setup=mongo
 
-echo -e "\e[36m>>>>>>>>> Install NodeJS <<<<<<<<<\e[0m"
-yum install nodejs -y
+func_nodejs
 
-echo -e "\e[36m>>>>>>>>> Copy Cart Service File <<<<<<<<<\e[0m"
-cp $(script_path)/cart.service /etc/systemd/system/cart.service
-# cp cart.service /etc/systemd/system/cart.service
+# print_head "Configure NodeJS Repos" 
+# curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
-echo -e "\e[36m>>>>>>>>> Create A User <<<<<<<<<\e[0m"
-useradd $(app_user)
+# print_head "Install NodeJS" 
+# yum install nodejs -y
 
-echo -e "\e[36m>>>>>>>>> Create A App directory <<<<<<<<<\e[0m"
-rm -rf /app
-mkdir /app 
+# print_head "Create Application User" 
+# useradd ${app_user}
 
-echo -e "\e[36m>>>>>>>>> Download Cart File <<<<<<<<<\e[0m"
-curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart.zip 
-cd /app 
+# print_head "Create Application Directory" 
+# rm -rf /app
+# mkdir /app 
 
-echo -e "\e[36m>>>>>>>>> Unzip Cart File <<<<<<<<<\e[0m"
-unzip /tmp/cart.zip
+# print_head "Download App Content" 
+# curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart.zip 
+# cd /app 
 
-# cd /app
+# print_head "Unzip Content" 
+# unzip /tmp/cart.zip
 
-echo -e "\e[36m>>>>>>>>> Install Cart Dependencies <<<<<<<<<\e[0m"
-npm install 
+# # cd /app
 
-# cp catalogue.service /etc/systemd/system/cart.service
+# print_head "Install NodeJS Dependencies" 
+# npm install 
 
-echo -e "\e[36m>>>>>>>>> Start Cart Service <<<<<<<<<\e[0m"
-systemctl daemon-reload
-systemctl enable cart 
-systemctl start cart
+# print_head "Copy Cart Service File"
+# cp ${script_path}/cart.service /etc/systemd/system/cart.service
+# # cp cart.service /etc/systemd/system/cart.service
+
+# print_head "Start Cart Service"
+# systemctl daemon-reload
+# systemctl enable cart 
+# systemctl start cart
