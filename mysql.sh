@@ -10,18 +10,23 @@ then
 fi
 
 func_print_head "Disable MySQL 8 Version" 
-dnf module disable mysql -y 
+dnf module disable mysql -y &>>$log_file
+func_status_check $?
 
 func_print_head "Copy MySQL Repo File" 
-cp ${script_path}/mysql.repo /etc/yum.repos.d/mysql.repo
+cp ${script_path}/mysql.repo /etc/yum.repos.d/mysql.repo &>>$log_file
+func_status_check $?
 
 func_print_head "Install MySQL" 
-yum install mysql-community-server -y
+yum install mysql-community-server -y &>>$log_file
+func_status_check $?
 
 func_print_head "Start MySQL"
-systemctl enable mysqld
-systemctl start mysqld 
+systemctl enable mysqld &>>$log_file
+systemctl start mysqld &>>$log_file
+func_status_check $?
 
 func_print_head "Reset Mysql Password" 
-mysql_secure_installation --set-root-pass ${mysql_root_password}
-mysql -uroot -p${mysql_root_password}
+mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$log_file
+mysql -uroot -p${mysql_root_password} &>>$log_file
+func_status_check $?

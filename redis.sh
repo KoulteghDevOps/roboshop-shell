@@ -9,7 +9,7 @@ func_status_check $?
 func_print_head "Install Redis"
 dnf module enable redis:remi-6.2 -y &>>$log_file 
 yum install redis -y &>>$log_file
-
+func_status_check $?
 
 func_print_head "Updating Redis Listening Address" 
 sed -i -e 's|127.0.0.1|0.0.0.0|' /etc/redis.conf /etc/redis/redis.conf &>>$log_file
