@@ -9,19 +9,19 @@ then
     exit
 fi
 
-print_head "Disable MySQL 8 Version" 
+func_print_head "Disable MySQL 8 Version" 
 dnf module disable mysql -y 
 
-print_head "Copy MySQL Repo File" 
+func_print_head "Copy MySQL Repo File" 
 cp ${script_path}/mysql.repo /etc/yum.repos.d/mysql.repo
 
-print_head "Install MySQL" 
+func_print_head "Install MySQL" 
 yum install mysql-community-server -y
 
-print_head "Start MySQL"
+func_print_head "Start MySQL"
 systemctl enable mysqld
 systemctl start mysqld 
 
-print_head "Reset Mysql Password" 
+func_print_head "Reset Mysql Password" 
 mysql_secure_installation --set-root-pass ${mysql_root_password}
 mysql -uroot -p${mysql_root_password}

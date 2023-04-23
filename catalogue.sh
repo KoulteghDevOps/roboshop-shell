@@ -6,52 +6,52 @@ component=catalogue
 func_schema_setup=mongo
 func_nodejs
 
-# print_head "Download nodejs" 
+# func_print_head "Download nodejs" 
 # curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
-# print_head "Install Nodejs" 
+# func_print_head "Install Nodejs" 
 # yum install nodejs -y
 
-# # print_head "Copy Catalogue System File" 
+# # func_print_head "Copy Catalogue System File" 
 # # cp catalogue.service /etc/systemd/system/catalogue.service
 
-# # print_head "Copy Mongo Repo File" 
+# # func_print_head "Copy Mongo Repo File" 
 # # cp mongo.repo /etc/yum.repos.d/mongo.repo
 
-# print_head "Create a User" 
+# func_print_head "Create a User" 
 # useradd ${app_user}
 
-# print_head "Create App Directory" 
+# func_print_head "Create App Directory" 
 # rm -rf /app
 # mkdir /app 
 
-# print_head "Download App Content" 
+# func_print_head "Download App Content" 
 # curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip 
 # cd /app 
 
-# print_head "Unzip app Content" 
+# func_print_head "Unzip app Content" 
 # unzip /tmp/catalogue.zip
 # # cd /app 
 
-# print_head "Install NodeJS Dependencies" 
+# func_print_head "Install NodeJS Dependencies" 
 # npm install 
 
-# print_head "Copy Catalogue System File" 
+# func_print_head "Copy Catalogue System File" 
 # cp ${script_path}/catalogue.service /etc/systemd/system/catalogue.service
 
-# print_head "Start Catalogue Service" 
+# func_print_head "Start Catalogue Service" 
 # systemctl daemon-reload
 # systemctl enable catalogue 
 # systemctl start catalogue
 
-# print_head "Copy Mongo Repo File" 
+# func_print_head "Copy Mongo Repo File" 
 # cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
-# print_head "Install Mongo Shell" 
+# func_print_head "Install Mongo Shell" 
 # yum install mongodb-org-shell -y
 
-# print_head "Load Schema" 
+# func_print_head "Load Schema" 
 # mongo --host mongodb-dev.gilbraltar.co.uk </app/schema/catalogue.js
 
-# print_head "Restart Catalogue Service" 
+# func_print_head "Restart Catalogue Service" 
 # systemctl restart catalogue

@@ -9,22 +9,22 @@ then
     exit
 fi
 
-print_head "Install RabbitMQ Repo" 
+func_print_head "Install RabbitMQ Repo" 
 curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
 
-print_head "Install Erland & RabbitMQ"
+func_print_head "Install Erland & RabbitMQ"
 yum install erlang -y
 
-print_head "Download RabbitMQ File"
+func_print_head "Download RabbitMQ File"
 curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
 
-print_head "Install RabbitMQ Server" 
+func_print_head "Install RabbitMQ Server" 
 yum install rabbitmq-server -y 
 
-print_head "Start RabbitMQ"
+func_print_head "Start RabbitMQ"
 systemctl enable rabbitmq-server 
 systemctl start rabbitmq-server 
 
-print_head "Set User Password" 
+func_print_head "Set User Password" 
 rabbitmqctl add_user roboshop ${rabbitmq_appuser_password}
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
