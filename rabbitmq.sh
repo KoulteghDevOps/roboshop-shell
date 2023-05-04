@@ -6,7 +6,7 @@ rabbitmq_appuser_password=$1
 if [ -z "$rabbitmq_appuser_password" ]; 
 then
     echo Input RabbitMQ Appuser Password Missing &>>$log_file
-    exit
+    exit 1
 fi
 
 func_print_head "Install RabbitMQ Repo" 

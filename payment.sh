@@ -4,7 +4,7 @@ source ${script_path}/common.sh
 
 if [ -z "$rabbitmq_appuser_password" ]; then
   echo Input Roboshop Appuser Password Missing
-  exit
+  exit 1
 fi
 
 component=payment
