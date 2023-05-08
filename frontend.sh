@@ -8,6 +8,7 @@ func_status_check $?
 
 func_print_head "Copy App Config File" 
 cp ${script_path}/roboshop.conf /etc/nginx/default.d/roboshop.conf &>>$log_file
+# cp roboshop.conf /etc/nginx/default.d/roboshop.conf &>>$log_file
 func_status_check $?
 # cp roboshop.conf /etc/nginx/default.d/roboshop.conf
 

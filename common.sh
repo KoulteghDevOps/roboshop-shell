@@ -1,13 +1,12 @@
 app_user=roboshop
 script=$(realpath "$0")
 script_path=$(dirname "$script")
-source ${script_path}/common.sh
 log_file=/tmp/roboshop.log
 # rm -f &>>$log_file
 
 func_print_head() {
-  echo -e "\e[36m>>>>>>>>> $1 <<<<<<<<<\e[0m"
-  echo -e "\e[36m>>>>>>>>> $1 <<<<<<<<<\e[0m" &>>$log_file
+  echo -e "\e[35m>>>>>>>>> $1 <<<<<<<<<\e[0m"
+  echo -e "\e[35m>>>>>>>>> $1 <<<<<<<<<\e[0m" &>>$log_file
 }
 
 func_status_check() {
@@ -21,7 +20,7 @@ func_status_check() {
 }
 
 func_schema_setup() {
-  if [ "$func_schema_setup" == "mongo" ]; then
+  if [ "$schema_setup" == "mongo" ]; then
     func_print_head "Copy MongoDB Repo" 
     cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo &>>$log_file
     func_status_check $?
@@ -34,8 +33,8 @@ func_schema_setup() {
     mongo --host mongodb-dev.gilbraltar.co.uk </app/schema/${component}.js &>>$log_file
     func_status_check $?
   fi 
-  if [ "$func_schema_setup" == "mysql" ]; then
-    func_print_head "Install MySQL" 
+  if [ "$schema_setup" == "mysql" ]; then
+    func_print_head "Install MySQL Client" 
     yum install mysql -y &>>$log_file
     func_status_check $? 
 
@@ -47,8 +46,9 @@ func_schema_setup() {
 
 func_app_prereq() {
   func_print_head "Create Application User"
+  id ${app_user} &>>/tmp/roboshop.log
   if [ $? -ne 0 ]; then
-    useradd ${app_user} &>>$log_file
+    useradd ${app_user} &>>/tmp/roboshop.log
   fi 
   func_status_check $?
 
@@ -122,7 +122,6 @@ func_java() {
   mv target/${component}-1.0.jar ${component}.jar &>>$log_file
 
   func_schema_setup
-
   func_systemd_setup
 }
 
@@ -148,7 +147,7 @@ func_python() {
   # unzip /tmp/${component}.zip
   # # cd /app 
 
-  func_print_head "Install ${component} Dependencies" 
+  func_print_head "Install Python Dependencies" 
   pip3.6 install -r requirements.txt &>>$log_file
   func_status_check $?
   

@@ -3,10 +3,9 @@ script_path=$(dirname "$script")
 source ${script_path}/common.sh
 mysql_root_password=$1
 
-if [ -z "$mysql_root_password" ]; 
-then
+if [ -z "$mysql_root_password" ]; then
     echo Input MySQL Root Password Missing
-    exit
+    exit 1
 fi
 
 func_print_head "Disable MySQL 8 Version" 
@@ -28,5 +27,5 @@ func_status_check $?
 
 func_print_head "Reset Mysql Password" 
 mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$log_file
-mysql -uroot -p${mysql_root_password} &>>$log_file
+# mysql -uroot -p${mysql_root_password} &>>$log_file
 func_status_check $?
