@@ -11,7 +11,7 @@ yum install mongodb-org -y &>>$log_file
 func_status_check $?
 
 func_print_head "Updating Listening IP for MongoDB" 
-sed -i -e 's/127\.0\.0\.1/0.0.0.0/g' /etc/mongod.conf &>>$log_file
+sed -i -e 's|127.0.0.1|0.0.0.0|' /etc/mongod.conf &>>$log_file
 func_status_check $?
 
 func_print_head "Start MongoDB Service" 
