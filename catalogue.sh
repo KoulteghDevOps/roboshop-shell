@@ -3,7 +3,7 @@ script_path=$(dirname "$script")
 source ${script_path}/common.sh
 
 component=catalogue
-func_schema_setup=mongo
+schema_setup=mongo
 func_nodejs
 
 # func_print_head "Download nodejs" 
