@@ -22,3 +22,5 @@ modify(substitute) some words
 Instead of | we can use /, ?, :, ;, #, @
 
 ---
+
+If input is not given the script should fail
